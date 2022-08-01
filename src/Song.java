@@ -1,6 +1,7 @@
 //Classe che istanzia l'oggetto canzone, permette di selezionare una canzone
 //e di valutare le emozioni che trsamette
 
+import java.io.File;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,14 +17,17 @@ class Song{
 	
 	private String name, author, album;
 	private int year, duration, id;
-	
+
+	//il costruttore prende in input l'inidice della canzone nel datast
+    //e da lì ottiene i dati.
 	public Song(int id){
 		
 		this.id = id;
 		String line="";
 		
 		try{
-			String path = getPath() + "\\songs.csv";
+			String path = getPath() + (File.separator + "songs.csv");
+            System.out.println(path);
 			BufferedReader br = new BufferedReader(new FileReader(path));
 			
 			for(int i=0;i <= id; i++)
@@ -53,7 +57,7 @@ class Song{
 		Scanner scan = new Scanner(System.in);
 		String amazement = scan.nextLine();
 		
-		String path = getPath() + "\\Emozioni.txt";
+		String path = getPath() + (File.separator + "Emozioni.txt");
 		
 		Writer output;
 		try{
@@ -67,15 +71,15 @@ class Song{
 		}
 	}
 	
-	//per ottenere il filePath su ogni dispositivo (solo windows)
+	//per ottenere il filePath alla cartella /data (ogni OS)
 	private String getPath(){
 		//ottengo la directory del progetto
 		String userDirectory = System.getProperty("user.dir");
-		String[] directories = userDirectory.split("\\\\");
+		String[] directories = userDirectory.split(File.separator);
 		//cambio cartella per aprire i file in \data
 		directories[directories.length -1] = "data";
 		
-		return String.join("\\", directories);
+		return String.join(File.separator, directories);
 		
 		
 	}
