@@ -27,11 +27,10 @@ class Song{
 		
 		try{
 			String path = getPath() + (File.separator + "songs.csv");
-            System.out.println(path);
 			BufferedReader br = new BufferedReader(new FileReader(path));
 			
 			for(int i=0;i <= id; i++)
-				line = br.readLine();
+                line = br.readLine();
 			
 			String[] values = line.split(",");
 				
