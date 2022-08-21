@@ -61,7 +61,7 @@ public class Login{
     }
 
     public boolean isLogged(){
-        return logged;
+        return this.logged;
     }
 
     private List<String[]> getUsers() throws IOException {

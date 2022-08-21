@@ -8,7 +8,7 @@ class EmotionalSongs{
 	public static void main(String[] args) throws IOException {
 		
         Song s = new Song();
-        s.inserisciEmozioniBrano();
+        s.inserisciEmozioniBrano("pippo");
         s.printEmotionsData();
 	}
 }

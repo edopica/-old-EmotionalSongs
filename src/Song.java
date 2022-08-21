@@ -71,17 +71,20 @@ class Song {
         this.year = Integer.parseInt(data[5]);
     }
 
-    public void inserisciEmozioniBrano() throws IOException {
+    public void inserisciEmozioniBrano(String userId) throws IOException {
         boolean rated = false;
         Scanner scan = new Scanner(System.in);
         String amazement = scan.nextLine();
-        String line, newLine = String.format("%d,,%s",this.id,amazement), oldLine="";
-        Writer output;
+        String line, oldLine="", newLine = String.format("%d,,%s,,%s",this.id,userId,amazement); 
         String path = getPath() + (File.separator + "Emozioni.csv");
+        //String[] data = new String[6];
+        Writer output;
         //verifichiamo se questa canzone è già stata valutata o meno.
         BufferedReader br = new BufferedReader(new FileReader(path));
         while((line = br.readLine()) != null) {
-            if(line.startsWith(Integer.toString(this.id))) {
+            String[] data = line.split(",,");
+            
+            if(data[0].equals(Integer.toString(this.id)) & data[1].equals(userId)) {
                 rated = true;
                 oldLine = line;
                 break;
@@ -146,21 +149,22 @@ class Song {
     }
 
     //funzione per ottenere le emozioni di una canzone dato l'id;
-    private String[] getEmotionsData(int id) throws IOException, FileNotFoundException {
+    private List<String[]> getEmotionsData(int id) throws IOException, FileNotFoundException {
         boolean check = false;
         String path = getPath() + (File.separator + "Emozioni.csv"), line;
-        String[] emotions = new String[2];
+        String[] rating = new String[3];
+        List<String[]> ratings = new ArrayList<String[]>();
         BufferedReader br = new BufferedReader(new FileReader(path));
 
         while((line = br.readLine()) != null) {
-            if(line.startsWith(Integer.toString(this.id))) {
-                emotions = line.split(",,");
-                check = true;
-                break;
+            rating = line.split(",,");
+
+            if(rating[0].equals( Integer.toString(this.id))) {
+                ratings.add(rating);
             }
         }
 
-        return emotions;
+        return ratings;
     }
 
     public void printSongData() {
@@ -169,11 +173,16 @@ class Song {
     }
 
     public void printEmotionsData() throws IOException {
-        String[] emotions = getEmotionsData(this.id);
-        String line = String.format("\nAmazement: %s\n", emotions[1]);
+        int i;
+        List<String[]> ratings = getEmotionsData(this.id);
+        String[] rating = new String[3];
+        String line;
 
-        System.out.println(line);
-
+        for(i=0;i<ratings.size();i++) {
+            rating  = ratings.get(i);
+            line = String.format("User:%s\nAmazement: %s\n",rating[1], rating[2]);
+            System.out.println(line);
+        }
     }
 
 }
